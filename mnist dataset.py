@@ -1,9 +1,4 @@
-
 # coding: utf-8
-
-# In[38]:
-
-
 from sklearn.neural_network import MLPClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import MinMaxScaler
@@ -13,25 +8,9 @@ import seaborn as sns
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
-# In[39]:
-
-
 train_df = pd.read_csv('train.csv')
 test_df  =  pd.read_csv('test.csv')
-
-
-# In[40]:
-
-
 train_df.head()
-
-
-# In[41]:
-
-
-#Question 1.
 def plot_image(dataFrame,index):
     row =  dataFrame.iloc[index]
     row =  row[1:]
@@ -45,62 +24,36 @@ def plot_image(dataFrame,index):
     output = np.array(output).reshape(28,28)
     plt.gray()
     return plt.imshow(output)
-
-
-# In[61]:
-
-
 plot_image(train_df,547)
-
-
-#    # Logestic Regression Start...
-
-# In[12]:
-
-
-#Data prep
+#--------------------------------------------------------------------------
 df = train_df
 X=df[df.columns[1:]]
 y= df[df.columns[0]]
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random_state=42)
-#Data preprocessing--
+#Data preprocessing---------------------------------------------------------
 scaler = MinMaxScaler()
 X_trained_sclaed = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
-# model 
+# model Logestic--------------------------------------------------------------
 Lr = LogisticRegression()
 Lr.fit(X_trained_sclaed,y_train)
 pred=Lr.predict(X_test_scaled)
 confusion_matrix = confusion_matrix(y_test,pred)
 dat_framecm = pd.DataFrame(confusion_matrix)
-
-
-# In[24]:
-
-
+#--------Confusion Matrix and Heat Map---------------------------------------------------
 plt.figure(figsize=(5.5,4))
 sns.heatmap(dat_framecm,annot=True)
 plt.title('The accuracy score :{0:.3f}'.format(accuracy_score(y_test,pred)))
 plt.ylabel('TrueLabel')
 plt.xlabel('PredictedLabel')
 print(classification_report(y_test,pred))
-
-
-# In[57]:
-
-
+#--unique class---------------------------------------------------------------------------
 unique,count = np.unique(y,return_counts=True)
 a=dict(zip(unique,count))
 plt.bar(a.keys(),a.values())
 plt.title('Priopr probab count')
 
-
-# # Nural Network
-# 
-
-# In[ ]:
-
-
+# Nural Network---------------------------------------------------------------------------
 df = train_df
 X=df[df.columns[1:]]
 y= df[df.columns[0]]
@@ -113,14 +66,7 @@ dat_framecm = pd.DataFrame(confusion_matrix)
 plt.figure(figsize=(5.5,4))
 sns.heatmap(dat_framecm,annot=True)
 plt.title('The accuracy score :{0:.3f}'.format(accuracy_score(y_test,pred_)))
-#plt.ylabel('TrueLabel')
-#plt.xlabel('PredictedLabel')
-#print(classification_report(y_test,pred_))
-
-
-# In[44]:
-
-
+#----------------------------------Analysis Start--------------------------------
 pred_
 y_test
 dummy_df = X_test.copy()
@@ -139,7 +85,7 @@ for i,v in enumerate(zip(actual_value,false_predict,index)):
     else:
         break
 print(output)        
-#plotting--- 
+#--Visivalize plotting Start -------------------------------------------------- 
 def plot_matrix(dataFarame,nine_array):
     incrementor = 0
     fig, ax= plt.subplots(3,3,sharex=True,sharey=True)
@@ -167,11 +113,3 @@ def plot_matrix(dataFarame,nine_array):
             ax[0,0].imshow(val)
             ax[0,0].set_title('Act : {actual}, pre : {predicted}'.format(actual=a,predicted=b))    
 plot_matrix(dummy_df,output)
-
-
-# In[ ]:
-
-
-
-    
-
